@@ -101,18 +101,20 @@
 
 	</dependencies>
 	
-	<!-- <distributionManagement>
+	<distributionManagement>
+		
 	    <repository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Releases Nexus Repository</name>
 	      <url>http://3.135.199.61:8081/repository/facebook-release/</url>
 	    </repository>
+	
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Snapshot Nexus Repository</name>
 	      <url>http://3.135.199.61:8081/repository/facebook-snapshot/</url>
 	    </snapshotRepository>
-	</distributionManagement> -->
+       </distributionManagement> 
 	
 	<build>
 		<plugins>
