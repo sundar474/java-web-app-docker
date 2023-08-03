@@ -40,7 +40,7 @@
 
 	<div class="row">
 		<div class="col-md-8">
-			<h2>Welcome To Jesus, Marathahalli, Bengaluru,Karnataka.</h2>
+			<h2>Welcome To SUNDAR, Marathahalli, Bengaluru,Karnataka.</h2>
 			<h3>Contact @ +91-7731999299,+91-6363698191</h3>
 		</div>	
 	</div>
