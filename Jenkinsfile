@@ -1,40 +1,57 @@
-node{
-     
-    stage('SCM Checkout'){
-        git url: 'https://github.com/MithunTechnologiesDevOps/java-web-app-docker.git',branch: 'master'
+pipeline {
+    agent any
+    
+    environment {
+        GIT_REPO = 'https://github.com/sundar474/java-web-app-docker.git'
+        MAVEN_HOME = 'Maven-3.8.6'
+        NEXUS_URL = 'http://3.142.194.99:8081/'
+        SONARQUBE_URL = 'http://3.145.92.245:9000/'
+        TOMCAT_HOME = '/opt/apache-tomcat-9.0.76/webapps'
     }
-    
-    stage(" Maven Clean Package"){
-      def mavenHome =  tool name: "Maven-3.5.6", type: "maven"
-      def mavenCMD = "${mavenHome}/bin/mvn"
-      sh "${mavenCMD} clean package"
-      
-    } 
-    
-    
-    stage('Build Docker Image'){
-        sh 'docker build -t dockerhandson/java-web-app .'
-    }
-    
-    stage('Push Docker Image'){
-        withCredentials([string(credentialsId: 'Docker_Hub_Pwd', variable: 'Docker_Hub_Pwd')]) {
-          sh "docker login -u dockerhandson -p ${Docker_Hub_Pwd}"
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url: GIT_REPO
+            }
         }
-        sh 'docker push dockerhandson/java-web-app'
-     }
-     
-      stage('Run Docker Image In Dev Server'){
         
-        def dockerRun = ' docker run  -d -p 8080:8080 --name java-web-app dockerhandson/java-web-app'
-         
-         sshagent(['DOCKER_SERVER']) {
-          sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.20.72 docker stop java-web-app || true'
-          sh 'ssh  ubuntu@172.31.20.72 docker rm java-web-app || true'
-          sh 'ssh  ubuntu@172.31.20.72 docker rmi -f  $(docker images -q) || true'
-          sh "ssh  ubuntu@172.31.20.72 ${dockerRun}"
-       }
-       
+        stage('Build') {
+            steps {
+                script {
+                    def mavenCmd = "${env.MAVEN_HOME}/bin/mvn"
+                    sh "${mavenCmd} clean package"
+                }
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    script {
+                        def mavenCmd = "${env.MAVEN_HOME}/bin/mvn"
+                        sh "${mavenCmd} sonar:sonar"
+                    }
+                }
+            }
+        }
+        
+        stage('Deploy to Nexus') {
+            steps {
+                script {
+                    def mavenCmd = "${env.MAVEN_HOME}/bin/mvn"
+                    sh "${mavenCmd} deploy -Dmaven.deploy.skip=true"
+                }
+            }
+        }
+        
+        stage('Deploy to Tomcat') {
+            steps {
+                script {
+                    def warFile = sh(returnStdout: true, script: 'ls target/*.war').trim()
+                    sh "cp ${warFile} ${env.TOMCAT_HOME}/webapps/"
+                }
+            }
+        }
     }
-     
-     
 }
