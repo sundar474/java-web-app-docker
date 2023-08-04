@@ -6,7 +6,7 @@ pipeline {
         MAVEN_HOME = '/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/Maven-3.8.6'
         NEXUS_URL = 'http://3.142.194.99:8081/'
         SONARQUBE_URL = 'http://3.145.92.245:9000/'
-        TOMCAT_HOME = '/opt/apache-tomcat-9.0.76/webapps'
+        TOMCAT_HOME = '/opt/apache-tomcat-9.0.76'
     }
 
     stages {
