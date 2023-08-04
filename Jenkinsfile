@@ -49,7 +49,8 @@ pipeline {
             steps {
                 script {
                     sshagent(['Tomcat-Server-Agent']) {
-                     sh 'scp -o StrictHostKeyChecking=no target/java-web-app-1.0.war ec2-user@3.143.218.86:/opt/apache-tomcat-9.0.76/webapps'
+                        sh 'scp -o StrictHostKeyChecking=no target/java-web-app-1.0.war ec2-user@3.143.218.86:/opt/apache-tomcat-9.0.76/webapps'
+                    }
                 }
             }
         }
