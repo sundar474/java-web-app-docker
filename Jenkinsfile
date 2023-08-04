@@ -7,6 +7,11 @@ pipeline {
         NEXUS_URL = 'http://3.142.194.99:8081/'
         SONARQUBE_URL = 'http://3.145.92.245:9000/'
         TOMCAT_HOME = '/opt/apache-tomcat-9.0.76'
+        TOMCAT_SSH_KEY = credentials('Tomcat-Server-Agent')
+        TOMCAT_SERVER_IP = '3.143.218.86'
+        TOMCAT_SERVER_USER = 'ec2-user'
+        TOMCAT_WEBAPPS_DIR = '/opt/apache-tomcat-9.0.76/webapps'
+        WAR_FILE_NAME = 'java-web-app-1.0.war'
     }
 
     stages {
