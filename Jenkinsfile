@@ -27,7 +27,7 @@ pipeline {
         
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
+                withSonarQubeEnv('Sonar Server-7.8') {
                     script {
                         def mavenCmd = "${env.MAVEN_HOME}/bin/mvn"
                         sh "${mavenCmd} sonar:sonar"
