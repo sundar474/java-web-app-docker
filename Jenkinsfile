@@ -54,7 +54,6 @@ pipeline {
             steps {
                 script {
                     def warFile = sh(returnStdout: true, script: 'ls target/*.war').trim()
-                    sh "mkdir -p ${env.TOMCAT_HOME}/webapps"
                     sh "cp ${warFile} ${env.TOMCAT_HOME}/webapps/"
                 }
             }
